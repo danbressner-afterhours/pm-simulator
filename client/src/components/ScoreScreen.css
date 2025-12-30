@@ -99,6 +99,157 @@
   gap: var(--spacing-sm);
 }
 
+/* War Room Summary */
+.war-room-summary {
+  background: var(--bg-tertiary);
+  border: 3px solid var(--status-critical);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.war-room-summary .section-title {
+  font-size: 20px;
+  color: var(--status-critical);
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.war-room-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.war-room-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.war-room-stat .stat-label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.war-room-stat .stat-value {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  color: var(--text-primary);
+}
+
+.war-room-stat .stat-value.positive {
+  color: var(--accent-green);
+}
+
+.war-room-stat .stat-value.negative {
+  color: var(--status-critical);
+}
+
+.war-room-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.war-room-result {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.result-label {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.result-grade {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+}
+
+.result-grade.grade-a {
+  color: var(--accent-green);
+  border: 2px solid var(--accent-green);
+}
+
+.result-grade.grade-b {
+  color: var(--accent-blue);
+  border: 2px solid var(--accent-blue);
+}
+
+.result-grade.grade-c {
+  color: var(--accent-yellow);
+  border: 2px solid var(--accent-yellow);
+}
+
+.result-grade.grade-d {
+  color: var(--status-critical);
+  border: 2px solid var(--status-critical);
+}
+
+.result-details {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.result-points {
+  color: var(--accent-blue);
+}
+
+.result-time {
+  color: var(--text-secondary);
+}
+
+.result-capacity {
+  font-weight: bold;
+}
+
+.result-capacity.bonus {
+  color: var(--accent-green);
+}
+
+.result-capacity.penalty {
+  color: var(--status-critical);
+}
+
+.result-capacity.neutral {
+  color: var(--text-secondary);
+}
+
+.result-feedback {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
 .over-badge {
   font-family: var(--font-heading);
   font-size: 12px;

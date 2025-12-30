@@ -2,7 +2,7 @@ import { getFeatureById } from '../data/scenario';
 import './ScoreScreen.css';
 
 const ScoreScreen = ({ scoreData, onPlayAgain }) => {
-  const { score, grade, gradeMessage, details, selectedFeatureIds, totalEffort, capacity } = scoreData;
+  const { score, grade, gradeMessage, details, selectedFeatureIds, totalEffort, capacity, warRoomResults = [], warRoomScore = 0, warRoomBonus = 0 } = scoreData;
 
   return (
     <div className="score-screen">
@@ -28,6 +28,47 @@ const ScoreScreen = ({ scoreData, onPlayAgain }) => {
             {totalEffort > capacity && <span className="over-badge">OVER!</span>}
           </div>
         </div>
+
+        {/* War Room Performance */}
+        {warRoomResults.length > 0 && (
+          <div className="war-room-summary">
+            <h2 className="section-title">🚨 Incident Management</h2>
+            <div className="war-room-stats">
+              <div className="war-room-stat">
+                <span className="stat-label">Incidents Handled:</span>
+                <span className="stat-value">{warRoomResults.length}</span>
+              </div>
+              <div className="war-room-stat">
+                <span className="stat-label">Total Score:</span>
+                <span className="stat-value">{warRoomScore} pts</span>
+              </div>
+              <div className="war-room-stat">
+                <span className="stat-label">Score Bonus:</span>
+                <span className={`stat-value ${warRoomBonus > 0 ? 'positive' : warRoomBonus < 0 ? 'negative' : ''}`}>
+                  {warRoomBonus > 0 ? '+' : ''}{warRoomBonus}
+                </span>
+              </div>
+            </div>
+            <div className="war-room-results">
+              {warRoomResults.map((result, index) => (
+                <div key={index} className="war-room-result">
+                  <div className="result-header">
+                    <span className="result-label">Incident {index + 1}</span>
+                    <span className={`result-grade grade-${result.grade?.toLowerCase()}`}>{result.grade}</span>
+                  </div>
+                  <div className="result-details">
+                    <span className="result-points">{result.points} points</span>
+                    <span className="result-time">{90 - (result.timeRemaining || 0)}s</span>
+                    <span className={`result-capacity ${result.capacityModifier > 0 ? 'bonus' : result.capacityModifier < 0 ? 'penalty' : 'neutral'}`}>
+                      {result.capacityModifier > 0 ? '+' : result.capacityModifier < 0 ? '' : ''}{result.capacityModifier} capacity
+                    </span>
+                  </div>
+                  <div className="result-feedback">{result.performanceFeedback}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Feedback Sections */}
         <div className="feedback-sections">

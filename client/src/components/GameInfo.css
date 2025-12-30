@@ -50,6 +50,37 @@
   animation: pulse 1s infinite;
 }
 
+.capacity-section.secondary {
+  opacity: 0.7;
+  font-size: 0.9em;
+}
+
+.capacity-section.secondary h2 {
+  font-size: 14px;
+}
+
+.capacity-modifier {
+  font-family: var(--font-body);
+  font-size: 12px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+  font-weight: bold;
+}
+
+.capacity-modifier.bonus {
+  background: rgba(80, 250, 123, 0.15);
+  border: 2px solid var(--accent-green);
+  color: var(--accent-green);
+}
+
+.capacity-modifier.penalty {
+  background: rgba(255, 85, 85, 0.15);
+  border: 2px solid var(--status-critical);
+  color: var(--status-critical);
+}
+
 .capacity-numbers {
   display: flex;
   align-items: baseline;

@@ -3,9 +3,18 @@ import TicketCard from './TicketCard';
 import { getFeatureById } from '../data/scenario';
 import './SprintColumn.css';
 
-const SprintColumn = ({ id, title, featureIds, devCapacity, usedCapacity }) => {
+const SprintColumn = ({
+  id,
+  title,
+  featureIds,
+  devCapacity,
+  usedCapacity,
+  isLocked = false,
+  isActive = false
+}) => {
   const { isOver, setNodeRef } = useDroppable({
     id,
+    disabled: isLocked
   });
 
   const features = featureIds.map(fid => getFeatureById(fid)).filter(Boolean);
@@ -14,7 +23,12 @@ const SprintColumn = ({ id, title, featureIds, devCapacity, usedCapacity }) => {
   const isNearCapacity = usedCapacity === devCapacity;
 
   return (
-    <div className={`sprint-column ${isOver ? 'drag-over' : ''}`}>
+    <div className={`
+      sprint-column
+      ${isOver ? 'drag-over' : ''}
+      ${isLocked ? 'locked' : ''}
+      ${isActive ? 'active' : ''}
+    `}>
       <div className="column-header">
         <h2 className="column-title">{title}</h2>
         {devCapacity && (
@@ -31,6 +45,13 @@ const SprintColumn = ({ id, title, featureIds, devCapacity, usedCapacity }) => {
         ref={setNodeRef}
         className={`column-dropzone ${isOver ? 'active' : ''}`}
       >
+        {isLocked && (
+          <div className="lock-overlay">
+            <span className="lock-icon">🔒</span>
+            <span className="lock-text">Locked</span>
+          </div>
+        )}
+
         {features.length === 0 ? (
           <div className="empty-state">
             <span className="empty-icon">📋</span>

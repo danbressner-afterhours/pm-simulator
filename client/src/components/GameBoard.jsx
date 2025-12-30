@@ -6,13 +6,36 @@ import GameInfo from './GameInfo';
 import TicketCard from './TicketCard';
 import './GameBoard.css';
 
-const GameBoard = ({ onSubmit }) => {
-  // Initialize columns with all features in backlog
-  const [columns, setColumns] = useState({
-    backlog: scenario.features.map(f => f.id),
-    sprint1: [],
-    sprint2: [],
-    sprint3: []
+const GameBoard = ({
+  onSubmitSprint,
+  currentSprint,
+  lockedSprints,
+  capacityModifiers,
+  previousSubmissions
+}) => {
+  // Initialize columns - restore previous submissions or start fresh
+  const [columns, setColumns] = useState(() => {
+    const initialColumns = {
+      backlog: scenario.features.map(f => f.id),
+      sprint1: [],
+      sprint2: [],
+      sprint3: []
+    };
+
+    // Restore any previous submissions
+    if (previousSubmissions) {
+      Object.keys(previousSubmissions).forEach(sprintKey => {
+        if (previousSubmissions[sprintKey]) {
+          initialColumns[sprintKey] = previousSubmissions[sprintKey];
+          // Remove from backlog
+          initialColumns.backlog = initialColumns.backlog.filter(
+            id => !previousSubmissions[sprintKey].includes(id)
+          );
+        }
+      });
+    }
+
+    return initialColumns;
   });
 
   const [activeId, setActiveId] = useState(null);
@@ -82,8 +105,11 @@ const GameBoard = ({ onSubmit }) => {
     return calculateTotalEffort(columns[sprintId]);
   };
 
-  const totalEffort = calculateTotalEffort([...columns.sprint1, ...columns.sprint2, ...columns.sprint3]);
-  const canSubmit = totalEffort <= scenario.context.totalDevMonths;
+  // Validation for current sprint only
+  const currentSprintKey = `sprint${currentSprint}`;
+  const currentSprintEffort = getSprintEffort(currentSprintKey);
+  const currentSprintCapacity = 3 + (capacityModifiers[currentSprintKey] || 0);
+  const canSubmitSprint = currentSprintEffort > 0 && currentSprintEffort <= currentSprintCapacity;
 
   const activeFeature = activeId ? getFeatureById(parseInt(activeId.replace('ticket-', ''))) : null;
 
@@ -97,7 +123,11 @@ const GameBoard = ({ onSubmit }) => {
       <div className="game-board">
         {/* Sidebar */}
         <aside className="game-sidebar">
-          <GameInfo columns={columns} />
+          <GameInfo
+            columns={columns}
+            currentSprint={currentSprint}
+            capacityModifiers={capacityModifiers}
+          />
         </aside>
 
         {/* Main Board */}
@@ -106,10 +136,10 @@ const GameBoard = ({ onSubmit }) => {
             <h2 className="board-title">{scenario.title}</h2>
             <button
               className="retro-button submit-button"
-              onClick={() => onSubmit(columns)}
-              disabled={!canSubmit}
+              onClick={() => onSubmitSprint(currentSprint, columns)}
+              disabled={!canSubmitSprint}
             >
-              Submit Roadmap
+              {currentSprint === 3 ? 'Submit Final Sprint' : `Complete Sprint ${currentSprint}`}
             </button>
           </div>
 
@@ -120,30 +150,38 @@ const GameBoard = ({ onSubmit }) => {
               featureIds={columns.backlog}
               devCapacity={null}
               usedCapacity={getSprintEffort('backlog')}
+              isLocked={false}
+              isActive={true}
             />
 
             <SprintColumn
               id="sprint1"
               title="🚀 Sprint 1"
               featureIds={columns.sprint1}
-              devCapacity={3}
+              devCapacity={3 + (capacityModifiers.sprint1 || 0)}
               usedCapacity={getSprintEffort('sprint1')}
+              isLocked={lockedSprints.includes(1)}
+              isActive={currentSprint === 1}
             />
 
             <SprintColumn
               id="sprint2"
               title="🚀 Sprint 2"
               featureIds={columns.sprint2}
-              devCapacity={3}
+              devCapacity={3 + (capacityModifiers.sprint2 || 0)}
               usedCapacity={getSprintEffort('sprint2')}
+              isLocked={lockedSprints.includes(2)}
+              isActive={currentSprint === 2}
             />
 
             <SprintColumn
               id="sprint3"
               title="🚀 Sprint 3"
               featureIds={columns.sprint3}
-              devCapacity={3}
+              devCapacity={3 + (capacityModifiers.sprint3 || 0)}
               usedCapacity={getSprintEffort('sprint3')}
+              isLocked={lockedSprints.includes(3)}
+              isActive={currentSprint === 3}
             />
           </div>
         </main>

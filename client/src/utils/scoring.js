@@ -230,3 +230,86 @@ export const getFeatureSummary = (featureIds) => {
     };
   });
 };
+
+// Generate feedback for a single sprint submission
+export const generateSprintFeedback = (sprintNum, columns) => {
+  const sprintKey = `sprint${sprintNum}`;
+  const sprintFeatureIds = columns[sprintKey] || [];
+
+  // Get features details
+  const features = sprintFeatureIds.map(id => getFeatureById(id)).filter(Boolean);
+
+  // Calculate effort
+  const effort = calculateTotalEffort(sprintFeatureIds);
+
+  // Identify critical features (features 10 and 12 are critical)
+  const criticalFeatureIds = [10, 12];
+  const criticalFeatures = features.filter(f => criticalFeatureIds.includes(f.id));
+
+  // Check if over capacity (base capacity is 3, but can be modified by war room)
+  const baseCapacity = 3;
+  const isOverCapacity = effort > baseCapacity;
+
+  return {
+    sprintNum,
+    features,
+    effort,
+    criticalFeatures,
+    isOverCapacity,
+    capacity: baseCapacity
+  };
+};
+
+// Calculate final score with sprint submissions and war room results
+export const calculateFinalScore = (sprintSubmissions, warRoomResults) => {
+  // Combine all sprint feature IDs
+  const allFeatureIds = [
+    ...(sprintSubmissions.sprint1 || []),
+    ...(sprintSubmissions.sprint2 || []),
+    ...(sprintSubmissions.sprint3 || [])
+  ];
+
+  // Use existing scoring logic for sprint decisions
+  const sprintScore = calculateScore({
+    sprint1: sprintSubmissions.sprint1 || [],
+    sprint2: sprintSubmissions.sprint2 || [],
+    sprint3: sprintSubmissions.sprint3 || []
+  });
+
+  // Calculate war room score
+  const warRoomScore = warRoomResults.reduce((sum, result) => sum + (result.points || 0), 0);
+
+  // War room performance affects final score (scaled down to not dominate)
+  // Good incident handling (70+ points per incident) should add ~5-10 to final score
+  // Poor handling should subtract
+  const warRoomBonus = Math.floor(warRoomScore / 10);
+
+  // Calculate final score
+  const finalScore = Math.max(0, Math.min(100, sprintScore.score + warRoomBonus));
+
+  // Recalculate grade based on final score
+  let grade, gradeMessage;
+  if (finalScore >= 80) {
+    grade = "A";
+    gradeMessage = "Excellent PM instincts!";
+  } else if (finalScore >= 60) {
+    grade = "B";
+    gradeMessage = "Solid prioritization";
+  } else if (finalScore >= 40) {
+    grade = "C";
+    gradeMessage = "Room for improvement";
+  } else {
+    grade = "D";
+    gradeMessage = "Needs work";
+  }
+
+  return {
+    ...sprintScore,
+    score: finalScore,
+    grade,
+    gradeMessage,
+    warRoomResults,
+    warRoomScore,
+    warRoomBonus
+  };
+};

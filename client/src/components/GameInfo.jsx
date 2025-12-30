@@ -1,11 +1,19 @@
 import { scenario, calculateTotalEffort } from '../data/scenario';
 import './GameInfo.css';
 
-const GameInfo = ({ columns }) => {
+const GameInfo = ({ columns, currentSprint = 1, capacityModifiers = {} }) => {
   // Calculate total effort across all sprints
   const totalEffort = Object.values(columns).flat().reduce((total, id) => {
     return total + (scenario.features.find(f => f.id === id)?.effortMonths || 0);
   }, 0);
+
+  // Calculate current sprint info
+  const currentSprintKey = `sprint${currentSprint}`;
+  const currentSprintEffort = calculateTotalEffort(columns[currentSprintKey] || []);
+  const baseCapacity = 3;
+  const currentSprintCapacity = baseCapacity + (capacityModifiers[currentSprintKey] || 0);
+  const currentSprintRemaining = currentSprintCapacity - currentSprintEffort;
+  const isCurrentSprintOver = currentSprintEffort > currentSprintCapacity;
 
   const remainingCapacity = scenario.context.totalDevMonths - totalEffort;
   const isOverCapacity = totalEffort > scenario.context.totalDevMonths;
@@ -17,28 +25,47 @@ const GameInfo = ({ columns }) => {
         <div className="company-name">{scenario.context.company}</div>
       </div>
 
-      {/* Capacity Meter */}
+      {/* Current Sprint Capacity */}
       <div className="capacity-section">
-        <h2>Dev Capacity</h2>
+        <h2>Sprint {currentSprint} Capacity</h2>
+        <div className={`capacity-meter ${isCurrentSprintOver ? 'over' : ''}`}>
+          <div className="capacity-numbers">
+            <span className="capacity-used-large">{currentSprintEffort}</span>
+            <span className="capacity-divider">/</span>
+            <span className="capacity-total-large">{currentSprintCapacity}</span>
+            <span className="capacity-unit-large">months</span>
+          </div>
+          {capacityModifiers[currentSprintKey] !== 0 && capacityModifiers[currentSprintKey] !== undefined && (
+            <div className={`capacity-modifier ${capacityModifiers[currentSprintKey] > 0 ? 'bonus' : 'penalty'}`}>
+              {capacityModifiers[currentSprintKey] > 0 ? '📈' : '📉'}
+              {capacityModifiers[currentSprintKey] > 0 ? '+' : ''}{capacityModifiers[currentSprintKey]} from incident handling
+            </div>
+          )}
+          <div className="capacity-bar">
+            <div
+              className="capacity-fill"
+              style={{ width: `${Math.min((currentSprintEffort / currentSprintCapacity) * 100, 100)}%` }}
+            />
+          </div>
+          <div className="capacity-remaining">
+            {isCurrentSprintOver ? (
+              <span className="over-warning">⚠️ {Math.abs(currentSprintRemaining)} months over!</span>
+            ) : (
+              <span>{currentSprintRemaining} months remaining</span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Total Capacity (All Sprints) */}
+      <div className="capacity-section secondary">
+        <h2>Total Capacity</h2>
         <div className={`capacity-meter ${isOverCapacity ? 'over' : ''}`}>
           <div className="capacity-numbers">
             <span className="capacity-used-large">{totalEffort}</span>
             <span className="capacity-divider">/</span>
             <span className="capacity-total-large">{scenario.context.totalDevMonths}</span>
             <span className="capacity-unit-large">months</span>
-          </div>
-          <div className="capacity-bar">
-            <div
-              className="capacity-fill"
-              style={{ width: `${Math.min((totalEffort / scenario.context.totalDevMonths) * 100, 100)}%` }}
-            />
-          </div>
-          <div className="capacity-remaining">
-            {isOverCapacity ? (
-              <span className="over-warning">⚠️ {Math.abs(remainingCapacity)} months over!</span>
-            ) : (
-              <span>{remainingCapacity} months remaining</span>
-            )}
           </div>
         </div>
       </div>
@@ -85,10 +112,11 @@ const GameInfo = ({ columns }) => {
       <div className="instructions-section">
         <h3>Instructions</h3>
         <ul className="instructions-list">
-          <li>Drag tickets into sprint columns</li>
-          <li>Stay within 9 dev-months total</li>
+          <li>Drag tickets into current sprint column</li>
+          <li>Complete sprints sequentially (1 → 2 → 3)</li>
           <li>Each sprint = 3 dev-months capacity</li>
-          <li>Align with strategic objectives</li>
+          <li>Handle SEV-1 incidents between sprints</li>
+          <li>Incident performance affects next sprint!</li>
           <li>Watch for critical deadlines!</li>
         </ul>
       </div>
