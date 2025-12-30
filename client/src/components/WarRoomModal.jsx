@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { paymentSystemIncident } from '../data/warRoomIncidents';
+import { incidents } from '../data/warRoomIncidents';
 import { calculateWarRoomScore } from '../utils/warRoomScoring';
 import { SlackNotificationContainer } from './SlackNotification';
 import './WarRoomModal.css';
@@ -14,7 +14,8 @@ const WarRoomModal = ({ incidentNum, onComplete }) => {
   const [nextNotificationId, setNextNotificationId] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
 
-  const incident = paymentSystemIncident;
+  // Select incident based on incidentNum (1 or 2)
+  const incident = incidents[incidentNum - 1] || incidents[0];
   const incidentQuestions = incident.questions;
 
   // Timer countdown

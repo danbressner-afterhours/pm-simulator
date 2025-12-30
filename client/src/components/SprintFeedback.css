@@ -21,6 +21,8 @@
   width: 90%;
   box-shadow: var(--shadow-xl);
   animation: slideUp 0.4s ease-out;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .feedback-header {
@@ -170,11 +172,15 @@
 
 .continue-button {
   width: 100%;
-  font-size: 16px;
-  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 14px;
+  padding: var(--spacing-md) var(--spacing-sm);
   background: var(--accent-green);
   border-color: var(--accent-green);
   transition: all var(--transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
 }
 
 .continue-button:hover:not(:disabled) {
@@ -242,5 +248,10 @@
 
   .feedback-text {
     font-size: 14px;
+  }
+
+  .continue-button {
+    font-size: 13px;
+    padding: var(--spacing-sm) var(--spacing-xs);
   }
 }

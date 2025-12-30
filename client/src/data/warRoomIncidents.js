@@ -210,3 +210,220 @@ export const paymentSystemIncident = {
     { time: 70, sender: "Marketing", message: "Should we post on social media?", priority: "low" }
   ]
 };
+
+export const databasePerformanceIncident = {
+  title: "Database Meltdown",
+  description: "App performance degraded to unusable. Database queries timing out.",
+  severity: "SEV-1",
+  metricsStart: {
+    errorRate: 1243,
+    usersAffected: 4800,
+    revenueImpact: 18000
+  },
+
+  questions: [
+    {
+      id: 1,
+      text: "Users report app is extremely slow. Monitoring shows database CPU at 98%. What's your first move?",
+      choices: [
+        {
+          id: 'a',
+          letter: 'A',
+          text: "Scale up database resources immediately",
+          isCorrect: true,
+          points: 15,
+          feedback: "Smart! Buy yourself time to investigate the root cause."
+        },
+        {
+          id: 'b',
+          letter: 'B',
+          text: "Start a Zoom call with entire engineering team",
+          isCorrect: false,
+          points: -10,
+          feedback: "Too many cooks! Keep the war room small and focused."
+        },
+        {
+          id: 'c',
+          letter: 'C',
+          text: "Look for recent deployments or database migrations",
+          isCorrect: true,
+          points: 10,
+          feedback: "Good instinct! Recent changes are often the culprit."
+        },
+        {
+          id: 'd',
+          letter: 'D',
+          text: "Turn off monitoring alerts to reduce noise",
+          isCorrect: false,
+          points: -20,
+          feedback: "Never silence alerts during an incident! You need visibility."
+        }
+      ]
+    },
+    {
+      id: 2,
+      text: "DBA finds an unoptimized query running millions of times. It's from the feature your team shipped yesterday. What do you do?",
+      choices: [
+        {
+          id: 'a',
+          letter: 'A',
+          text: "Kill the problematic queries and disable the new feature",
+          isCorrect: true,
+          points: 20,
+          feedback: "Correct! Stop the bleeding first. Feature can wait."
+        },
+        {
+          id: 'b',
+          letter: 'B',
+          text: "Try to optimize the query in real-time",
+          isCorrect: false,
+          points: -5,
+          feedback: "Too risky during an outage. Disable first, optimize later."
+        },
+        {
+          id: 'c',
+          letter: 'C',
+          text: "Ask the engineer who wrote it to fix it",
+          isCorrect: false,
+          points: -15,
+          feedback: "No time for blame! Focus on resolution."
+        },
+        {
+          id: 'd',
+          letter: 'D',
+          text: "Wait to see if scaling fixed it",
+          isCorrect: false,
+          points: -20,
+          feedback: "Passive approach during SEV-1 is dangerous. Take action!"
+        }
+      ]
+    },
+    {
+      id: 3,
+      text: "Feature is disabled but some customers already have cached bad state. Support is overwhelmed. What's your priority?",
+      choices: [
+        {
+          id: 'a',
+          letter: 'A',
+          text: "Write a script to clear affected customer cache",
+          isCorrect: true,
+          points: 15,
+          feedback: "Proactive! Fix the root cause, not symptoms."
+        },
+        {
+          id: 'b',
+          letter: 'B',
+          text: "Tell support to ask customers to clear their browser cache",
+          isCorrect: false,
+          points: -10,
+          feedback: "Puts burden on customers. You broke it, you fix it."
+        },
+        {
+          id: 'c',
+          letter: 'C',
+          text: "Post a workaround on the status page",
+          isCorrect: true,
+          points: 10,
+          feedback: "Good communication! Helps customers self-serve."
+        },
+        {
+          id: 'd',
+          letter: 'D',
+          text: "Wait for cache to expire naturally",
+          isCorrect: false,
+          points: -15,
+          feedback: "Too slow! Customers are hurting right now."
+        }
+      ]
+    },
+    {
+      id: 4,
+      text: "VP of Sales escalates: \"Enterprise demo in 30 minutes, is the app stable?\" What do you say?",
+      choices: [
+        {
+          id: 'a',
+          letter: 'A',
+          text: "Yes, we've mitigated the issue. Monitoring closely.",
+          isCorrect: true,
+          points: 15,
+          feedback: "Honest and confident. Shows you're on top of it."
+        },
+        {
+          id: 'b',
+          letter: 'B',
+          text: "Definitely stable, no issues!",
+          isCorrect: false,
+          points: -20,
+          feedback: "Overconfident! What if something breaks during the demo?"
+        },
+        {
+          id: 'c',
+          letter: 'C',
+          text: "Maybe reschedule to be safe?",
+          isCorrect: false,
+          points: -10,
+          feedback: "Too cautious. Trust your mitigation but stay alert."
+        },
+        {
+          id: 'd',
+          letter: 'D',
+          text: "I'm busy, ask engineering directly",
+          isCorrect: false,
+          points: -25,
+          feedback: "PM owns communication! Don't deflect to engineering."
+        }
+      ]
+    },
+    {
+      id: 5,
+      text: "System is stable. Incident resolved. How do you prevent this next time?",
+      choices: [
+        {
+          id: 'a',
+          letter: 'A',
+          text: "Add database query review to PR checklist",
+          isCorrect: true,
+          points: 15,
+          feedback: "Process improvement! Catch issues before production."
+        },
+        {
+          id: 'b',
+          letter: 'B',
+          text: "Ban the team from shipping new features for a month",
+          isCorrect: false,
+          points: -30,
+          feedback: "Punitive and counterproductive. Learn, don't punish."
+        },
+        {
+          id: 'c',
+          letter: 'C',
+          text: "Set up better database monitoring and alerts",
+          isCorrect: true,
+          points: 15,
+          feedback: "Great! Catch issues earlier next time."
+        },
+        {
+          id: 'd',
+          letter: 'D',
+          text: "Nothing - incidents happen, move on",
+          isCorrect: false,
+          points: -20,
+          feedback: "Missed learning opportunity! Always improve after incidents."
+        }
+      ]
+    }
+  ],
+
+  interruptionMessages: [
+    { time: 10, sender: "VP Sales", message: "Big demo in 30 min, is app working???", priority: "high" },
+    { time: 25, sender: "Support Lead", message: "100+ tickets and counting...", priority: "high" },
+    { time: 40, sender: "DBA", message: "Found the query. It's BAD.", priority: "high" },
+    { time: 55, sender: "CEO", message: "Board member just complained. Status?", priority: "high" },
+    { time: 70, sender: "Engineer", message: "Cache fix ready to deploy", priority: "medium" }
+  ]
+};
+
+export const incidents = [
+  paymentSystemIncident,
+  databasePerformanceIncident
+];

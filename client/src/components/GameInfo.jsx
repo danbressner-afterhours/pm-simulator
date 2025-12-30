@@ -118,8 +118,6 @@ const GameInfo = ({ columns, currentSprint = 1, capacityModifiers = {} }) => {
           <li>Drag tickets into current sprint column</li>
           <li>Complete sprints sequentially (1 → 2 → 3)</li>
           <li>Each sprint = 3 dev-months capacity</li>
-          <li>Handle SEV-1 incidents between sprints</li>
-          <li>Incident performance affects next sprint!</li>
           <li>Watch for critical deadlines!</li>
         </ul>
       </div>
