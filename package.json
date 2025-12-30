@@ -1,0 +1,17 @@
+{
+  "name": "pm-simulator",
+  "version": "1.0.0",
+  "description": "An interactive app that simulates the experience of being a product manager",
+  "scripts": {
+    "client": "cd client && npm start",
+    "server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install"
+  },
+  "keywords": ["product-manager", "simulator", "game"],
+  "author": "danbressner-afterhours",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
