@@ -266,6 +266,35 @@
   color: var(--accent-blue);
 }
 
+/* About Section */
+.about-section {
+  padding: var(--spacing-md);
+  display: flex;
+  justify-content: center;
+}
+
+.about-button {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border: 3px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.about-button:hover {
+  background: var(--accent-purple);
+  border-color: var(--accent-purple);
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
 /* Scrollbar */
 .game-info::-webkit-scrollbar {
   width: 10px;

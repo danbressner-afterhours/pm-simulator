@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { scenario, calculateTotalEffort } from '../data/scenario';
+import AboutModal from './AboutModal';
 import './GameInfo.css';
 
 const GameInfo = ({ columns, currentSprint = 1, capacityModifiers = {} }) => {
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   // Calculate total effort across all sprints
   const totalEffort = Object.values(columns).flat().reduce((total, id) => {
     return total + (scenario.features.find(f => f.id === id)?.effortMonths || 0);
@@ -120,6 +123,16 @@ const GameInfo = ({ columns, currentSprint = 1, capacityModifiers = {} }) => {
           <li>Watch for critical deadlines!</li>
         </ul>
       </div>
+
+      {/* About Button */}
+      <div className="about-section">
+        <button className="about-button" onClick={() => setIsAboutOpen(true)}>
+          About
+        </button>
+      </div>
+
+      {/* About Modal */}
+      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );
 };

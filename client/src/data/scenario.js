@@ -1,9 +1,9 @@
 export const scenario = {
-  title: "Learnit.app Product Prioritization",
+  title: "Learnit Product Planning",
   subtitle: "Your First 3 Months as PM",
 
   context: {
-    company: "learnit.app",
+    company: "test your skills",
     role: "First Product Manager",
     teamSize: 3,
     developers: 3,
