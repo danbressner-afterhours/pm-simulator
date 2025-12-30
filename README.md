@@ -2,6 +2,8 @@
 
 An interactive web application that simulates the experience of being a product manager. Navigate real-world PM scenarios, make decisions, and see the consequences of your choices.
 
+Try it live: https://pm-simulator-olive.vercel.app
+
 ## Project Overview
 
 PM Simulator is a game-based learning tool that puts you in the shoes of a product manager. You'll face realistic scenarios including:
@@ -59,15 +61,6 @@ pm-simulator/
 ├── package.json     # Root package for scripts
 └── README.md
 ```
-
-## Development Roadmap
-
-- [ ] Core game engine and scenario system
-- [ ] Interactive decision trees
-- [ ] Score and feedback system
-- [ ] Multiple scenario paths
-- [ ] User progress tracking
-- [ ] Leaderboard and achievements
 
 ## Contributing
 
