@@ -1,0 +1,244 @@
+/* Import pixel fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+/* Retro/Lofi Color Palette */
+:root {
+  /* Background colors */
+  --bg-primary: #2a2a3e;
+  --bg-secondary: #1e1e2e;
+  --bg-tertiary: #16161e;
+
+  /* Accent colors - soft pastels */
+  --accent-pink: #ff9fcd;
+  --accent-blue: #8be9fd;
+  --accent-yellow: #f1fa8c;
+  --accent-green: #50fa7b;
+  --accent-purple: #bd93f9;
+  --accent-orange: #ffb86c;
+
+  /* UI colors */
+  --text-primary: #f8f8f2;
+  --text-secondary: #a0a0b0;
+  --card-bg: #44475a;
+  --border: #6272a4;
+  --border-light: #8897c4;
+
+  /* Status colors */
+  --status-critical: #ff5555;
+  --status-high: --var(--accent-orange);
+  --status-medium: var(--accent-yellow);
+  --status-low: var(--text-secondary);
+
+  /* Fonts */
+  --font-heading: 'Press Start 2P', monospace;
+  --font-body: 'VT323', monospace;
+  --font-mono: 'Courier New', monospace;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  /* Shadows */
+  --shadow-sm: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 4px 4px 0 rgba(0, 0, 0, 0.3);
+  --shadow-lg: 6px 6px 0 rgba(0, 0, 0, 0.3);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+}
+
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.4;
+  overflow-x: hidden;
+}
+
+/* Pixel-perfect borders */
+.pixel-border {
+  border: 3px solid var(--border);
+  image-rendering: pixelated;
+}
+
+.pixel-border-light {
+  border: 2px solid var(--border-light);
+  image-rendering: pixelated;
+}
+
+/* Retro button style */
+.retro-button {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--card-bg);
+  border: 3px solid var(--border);
+  color: var(--text-primary);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.retro-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-blue);
+}
+
+.retro-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.retro-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Retro card style */
+.retro-card {
+  background: var(--card-bg);
+  border: 3px solid var(--border);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-fast);
+}
+
+.retro-card:hover {
+  border-color: var(--accent-pink);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Headings */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: var(--spacing-lg);
+  color: var(--accent-pink);
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  font-size: 16px;
+  margin-bottom: var(--spacing-md);
+  color: var(--accent-blue);
+}
+
+h3 {
+  font-size: 12px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent-yellow);
+}
+
+/* Pixel divider */
+.pixel-divider {
+  height: 3px;
+  background: var(--border);
+  margin: var(--spacing-md) 0;
+  image-rendering: pixelated;
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: 0 0 10px var(--accent-blue),
+              0 0 20px var(--accent-blue),
+              0 0 30px var(--accent-blue);
+}
+
+/* Scanline effect (optional) */
+@keyframes scanline {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+.scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanlines::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 1000;
+  animation: scanline 8s linear infinite;
+}
+
+/* Pixel corners effect */
+.pixel-corners {
+  position: relative;
+}
+
+.pixel-corners::before,
+.pixel-corners::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-pink);
+}
+
+.pixel-corners::before {
+  top: -3px;
+  left: -3px;
+}
+
+.pixel-corners::after {
+  bottom: -3px;
+  right: -3px;
+}
+
+/* Utility classes */
+.text-pink { color: var(--accent-pink); }
+.text-blue { color: var(--accent-blue); }
+.text-yellow { color: var(--accent-yellow); }
+.text-green { color: var(--accent-green); }
+.text-purple { color: var(--accent-purple); }
+.text-orange { color: var(--accent-orange); }
+
+.bg-pink { background-color: var(--accent-pink); }
+.bg-blue { background-color: var(--accent-blue); }
+.bg-yellow { background-color: var(--accent-yellow); }
+.bg-green { background-color: var(--accent-green); }
+.bg-purple { background-color: var(--accent-purple); }
+.bg-orange { background-color: var(--accent-orange); }

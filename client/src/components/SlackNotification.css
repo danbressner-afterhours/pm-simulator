@@ -1,0 +1,206 @@
+.slack-notifications-container {
+  position: fixed;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-width: 400px;
+  pointer-events: none;
+}
+
+.slack-notification {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  background: var(--card-bg);
+  border: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  pointer-events: all;
+  min-width: 300px;
+  max-width: 400px;
+
+  /* Initial state */
+  transform: translateX(120%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Slide in animation */
+.slack-notification.visible {
+  transform: translateX(0);
+  opacity: 1;
+  animation: bounce 0.5s ease-out;
+}
+
+/* Slide out animation */
+.slack-notification.leaving {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+/* Priority styling */
+.slack-notification.priority-high {
+  border-color: var(--status-critical);
+  animation: bounce 0.5s ease-out, pulse-border 2s infinite;
+}
+
+.slack-notification.priority-medium {
+  border-color: var(--accent-yellow);
+}
+
+.slack-notification.priority-low {
+  border-color: var(--text-secondary);
+}
+
+/* Hover effect */
+.slack-notification:hover {
+  transform: translateX(-4px);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Icon */
+.notification-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--accent-purple);
+}
+
+.priority-high .notification-icon {
+  color: var(--status-critical);
+  animation: pulse-icon 1.5s infinite;
+}
+
+.priority-medium .notification-icon {
+  color: var(--accent-yellow);
+}
+
+.priority-low .notification-icon {
+  color: var(--text-secondary);
+}
+
+/* Content */
+.notification-content {
+  flex: 1;
+  min-width: 0; /* Allow text truncation */
+}
+
+.notification-sender {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.notification-message {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text-primary);
+  line-height: 1.3;
+  word-wrap: break-word;
+}
+
+/* Close button */
+.notification-close {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+  line-height: 1;
+}
+
+.notification-close:hover {
+  color: var(--text-primary);
+  background: var(--status-critical);
+  border-color: var(--status-critical);
+  transform: rotate(90deg);
+}
+
+/* Animations */
+@keyframes bounce {
+  0% {
+    transform: translateX(120%);
+  }
+  60% {
+    transform: translateX(-10px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: var(--status-critical);
+    box-shadow: 0 0 0 rgba(255, 85, 85, 0);
+  }
+  50% {
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 15px rgba(255, 85, 85, 0.5);
+  }
+}
+
+@keyframes pulse-icon {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .slack-notifications-container {
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    left: var(--spacing-md);
+    max-width: none;
+  }
+
+  .slack-notification {
+    min-width: 0;
+    max-width: none;
+  }
+
+  .notification-message {
+    font-size: 14px;
+  }
+}
+
+/* Stacking multiple notifications */
+.slack-notifications-container .slack-notification:not(:last-child) {
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Limit visible notifications */
+.slack-notifications-container .slack-notification:nth-child(n+4) {
+  display: none;
+}
